@@ -26,7 +26,7 @@ const browserBaseConfig: any = {
 
 export default defineConfig(({ mode }) => {
 	const env = loadEnv(mode, process.cwd(), 'VITE_PUBLIC_');
-	const SERVER_ORIGIN = env.VITE_PUBLIC_SERVER_ORIGIN || 'http://localhost:8080';
+	const SERVER_ORIGIN = env.VITE_PUBLIC_SERVER_ORIGIN || 'http://localhost:1234';
 
 	return {
 		build: {
@@ -65,7 +65,17 @@ export default defineConfig(({ mode }) => {
 				'/props': SERVER_ORIGIN,
 				'/slots': SERVER_ORIGIN,
 				'/tools': SERVER_ORIGIN,
-				'/v1': SERVER_ORIGIN
+				'/v1': SERVER_ORIGIN,
+				'/api/bionic': {
+					target: 'http://localhost:1234',
+					changeOrigin: true,
+					rewrite: (path: string) => path.replace(/^\/api\/bionic/, '')
+				},
+				'/api/ollama': {
+					target: 'http://localhost:11434',
+					changeOrigin: true,
+					rewrite: (path: string) => path.replace(/^\/api\/ollama/, '')
+				}
 			}
 		},
 
